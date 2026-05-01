@@ -1,0 +1,62 @@
+# 🛠️ Developer Guide: Closet Baddie Ecosystem
+
+This guide is intended for developers maintaining, debugging, or extending the Closet Baddie platform. It outlines the technical architecture, data flow, and security protocols of the full-stack PHP application[cite: 1].
+
+---
+
+## 🏗️ Technical Architecture
+
+The system follows a **Modular Monolith** structure. It separates administrative logic from client-side operations to ensure a clean boundary between business management and the shopping experience[cite: 1].
+
+### 1. Folder Structure & Responsibility
+*   **`/` (Root):** Contains the Public Frontend (e.g., `index.php`, `shop.php`, `cart.php`). These scripts interact with the database to display products and process customer sessions[cite: 1].
+*   **`/admin`:** The Private Backend. This directory is a self-contained suite for business operations like `admin_business_intelligence.php` and `manage_products.php`[cite: 1].
+*   **`/assets`:** 
+    *   `css/`: Modular stylesheets (e.g., `shop.css`, `admin_style.css`) to prevent global style conflicts[cite: 1].
+    *   `img/`: Storage for all product media and UI icons[cite: 1].
+
+---
+
+## 📊 Logic & Data Flow
+
+### 🛒 The Shopping Lifecycle
+1.  **Session Initialization:** When a user visits, a PHP session tracks their `cart.php` and `wishlist.php` data[cite: 1].
+2.  **Order Persistence:** Upon `checkout.php`, data is moved from the volatile session into the permanent `orders` database table[cite: 1].
+3.  **Real-time Admin Updates:** The `admin_business_intelligence.php` script queries the `orders` table to instantly update revenue and sales metrics on the dashboard[cite: 1].
+
+### 📦 Product Management (CRUD)
+*   **Create/Update:** `add_products.php` and `edit_product.php` handle multi-part form data to upload images to `/assets/img` and save metadata to the `products` table[cite: 1].
+*   **Deletion:** Removing a product record also requires the developer to ensure the associated image file in `/assets/img` is managed (deleted or archived).
+
+---
+
+## 🔐 Security & Access Control
+
+### 1. Admin Authentication
+Every page within the `/admin` directory must include `auth_admin.php` at the very top. This script performs the following:
+*   Checks for a valid `admin_session`.
+*   Verifies staff privileges.
+*   Redirects unauthorized attempts to `blocked.php`[cite: 1].
+
+### 2. Data Protection
+*   **SQL Injection:** Use prepared statements for all dynamic queries, especially in `search.php` and `login.php`.
+*   **Input Sanitization:** All data from `POST` requests in the admin panel (like product prices or names) must be sanitized before database entry[cite: 1].
+
+---
+
+## 🚀 Maintenance & Scaling
+
+### Adding New Features
+*   **New Admin Page:** Create the `.php` file in `/admin`, include `auth_admin.php`, and update the sidebar navigation script to include the new link[cite: 1].
+*   **New Styles:** Add specific CSS files to `/assets/css/` rather than modifying the main stylesheet to keep the system lightweight[cite: 1].
+
+### Database Optimization
+*   The `admin_business_intelligence.php` script performs heavy aggregation. As the store grows, ensure the `orders` table is properly indexed on `date` and `status` columns to maintain dashboard speed[cite: 1].
+
+---
+
+## 🛠️ Tech Stack Requirements
+*   **Runtime:** PHP 7.4+
+*   **Database:** MySQL 5.7+
+*   **Frontend:** HTML5, CSS3, JavaScript (Vanilla)
+*   **Web Server:** Apache (with `mod_rewrite` enabled) or Nginx
