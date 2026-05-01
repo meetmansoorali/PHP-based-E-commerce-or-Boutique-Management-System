@@ -52,7 +52,7 @@
 <br>
 
 ## ⚙️ Quick Installation
-1. <font face="courier"><b>Clone Repo:</b> git clone [https://github.com/meetmansoorali/closetbaddie.git](https://github.com/meetmansoorali/closetbaddie.git)</font>
+1. <font face="courier"><b>Clone Repo:</b> git clone [https://github.com/meetmansoorali/PHP-based-E-commerce-or-Boutique-Management-System](https://github.com/meetmansoorali/PHP-based-E-commerce-or-Boutique-Management-System)</font>
 2. <font face="courier"><b>Database Setup:</b> Import the provided .sql file into your MySQL environment[cite: 1, 2].</font>
 3. <font face="courier"><b>Local Hosting:</b> Deploy via a local server (like XAMPP) to access the integrated database features[cite: 2].</font>
 
